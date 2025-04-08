@@ -95,6 +95,29 @@
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>3.21.0</version> <!-- newest version -->
+        <configuration>
+          <rulesets>
+            <!-- rulesets -->
+            <ruleset>customize-rules.xml</ruleset>
+          </rulesets>
+          <failOnViolation>false</failOnViolation>
+          <printFailingErrors>true</printFailingErrors> <!-- show specific error -->
+        </configuration>
+        <executions>
+          <execution>
+            <phase>verify</phase>
+            <goals>
+              <goal>check</goal> <!-- execute automatically -->
+              <goal>pmd</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
         <version>${org.apache.maven.plugins.maven-antrun-plugin.version}</version>
       </plugin>
@@ -514,6 +537,11 @@
         <artifactId>maven-surefire-report-plugin</artifactId>
         <version>3.0.0</version>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>3.21.0</version>
+      </plugin>
     </plugins>
   </reporting>
 
@@ -523,5 +551,4 @@
       <url>file://${project.build.directory}/site</url>
     </site>
   </distributionManagement>
-
 </project>

@@ -1,3 +1,6 @@
+run `mvn site site:stage` to put the documents below the staging file.
+
+
 <h3 align="center">
   <img src="https://teedy.io/img/github-title.png" alt="Teedy" width=500 />
 </h3>
@@ -21,7 +24,7 @@ A demo is available at [demo.teedy.io](https://demo.teedy.io)
 
 - Guest login is enabled with read access on all documents
 - "admin" login with "admin" password
-- "demo" login with "password" password 
+- "demo" login with "password" password
 
 # Features
 
@@ -52,7 +55,6 @@ A demo is available at [demo.teedy.io](https://demo.teedy.io)
 - Fully featured Android client
 - [Bulk files importer](https://github.com/sismics/docs/tree/master/docs-importer) (single or scan mode)
 - Tested to one million documents
-
 
 # Native Installation
 
@@ -93,7 +95,6 @@ It is highly recommended that you proceed to install Windows Subsystem Linux (WS
 ](https://docs.microsoft.com/en-us/windows/wsl/install). This will allow you to run a Linux distro (Ubuntu's the default) within the Windows environment, and you can then proceed to follow the Linux (Ubuntu 22.04) instructions to install the dependencies.
 
 **Note**: This would mean that you should proceed to execute the following instructions within the Linux environment as well.
-
 
 ## How to build Teedy from the sources
 
@@ -143,4 +144,4 @@ The `master` branch is the default and base branch for the project. It is used f
 # License
 
 Teedy is released under the terms of the GPL license. See `COPYING` for more
-information or see <http://opensource.org/licenses/GPL-2.0>.
+information or see [http://opensource.org/licenses/GPL-2.0](http://opensource.org/licenses/GPL-2.0).
