@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pmd xmlns="http://pmd.sourceforge.net/report/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pmd.sourceforge.net/report/2.0.0 http://pmd.sourceforge.net/report_2_0_0.xsd" version="6.55.0" timestamp="2025-04-01T12:13:43.580">
-<file name="/Users/ay/Documents/Course/cs304_SE/Lab/Teedy-1/docs-core/src/main/java/com/sismics/docs/core/service/InboxService.java">
+<pmd xmlns="http://pmd.sourceforge.net/report/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pmd.sourceforge.net/report/2.0.0 http://pmd.sourceforge.net/report_2_0_0.xsd" version="6.55.0" timestamp="2025-04-23T21:36:47.552">
+<file name="/Users/ay/Library/CloudStorage/OneDrive-Personal/Documents/Course/cs304_SE/Lab/Teedy-1/docs-core/src/main/java/com/sismics/docs/core/service/InboxService.java">
 <violation beginline="94" endline="96" begincolumn="15" endcolumn="13" rule="EmptyCatchBlock" ruleset="Error Prone" package="com.sismics.docs.core.service" class="InboxService" method="syncInbox" externalInfoUrl="https://pmd.github.io/pmd-6.55.0/pmd_rules_java_errorprone.html#emptycatchblock" priority="3">
 Avoid empty catch blocks
 </violation>
@@ -11,17 +11,17 @@ Avoid empty catch blocks
 Avoid empty catch blocks
 </violation>
 </file>
-<file name="/Users/ay/Documents/Course/cs304_SE/Lab/Teedy-1/docs-core/src/main/java/com/sismics/docs/core/util/MetadataUtil.java">
+<file name="/Users/ay/Library/CloudStorage/OneDrive-Personal/Documents/Course/cs304_SE/Lab/Teedy-1/docs-core/src/main/java/com/sismics/docs/core/util/MetadataUtil.java">
 <violation beginline="171" endline="189" begincolumn="21" endcolumn="21" rule="CollapsibleIfStatements" ruleset="Design" package="com.sismics.docs.core.util" class="MetadataUtil" method="addMetadata" externalInfoUrl="https://pmd.github.io/pmd-6.55.0/pmd_rules_java_design.html#collapsibleifstatements" priority="3">
 These nested if statements could be combined
 </violation>
 </file>
-<file name="/Users/ay/Documents/Course/cs304_SE/Lab/Teedy-1/docs-core/src/main/java/com/sismics/docs/core/util/TransactionUtil.java">
+<file name="/Users/ay/Library/CloudStorage/OneDrive-Personal/Documents/Course/cs304_SE/Lab/Teedy-1/docs-core/src/main/java/com/sismics/docs/core/util/TransactionUtil.java">
 <violation beginline="70" endline="78" begincolumn="13" endcolumn="13" rule="CollapsibleIfStatements" ruleset="Design" package="com.sismics.docs.core.util" class="TransactionUtil" method="handle" externalInfoUrl="https://pmd.github.io/pmd-6.55.0/pmd_rules_java_design.html#collapsibleifstatements" priority="3">
 These nested if statements could be combined
 </violation>
 </file>
-<file name="/Users/ay/Documents/Course/cs304_SE/Lab/Teedy-1/docs-core/src/main/java/com/sismics/util/EmailUtil.java">
+<file name="/Users/ay/Library/CloudStorage/OneDrive-Personal/Documents/Course/cs304_SE/Lab/Teedy-1/docs-core/src/main/java/com/sismics/util/EmailUtil.java">
 <violation beginline="145" endline="145" begincolumn="13" endcolumn="28" rule="UnnecessaryFullyQualifiedName" ruleset="Code Style" package="com.sismics.util" class="EmailUtil" method="sendEmail" externalInfoUrl="https://pmd.github.io/pmd-6.55.0/pmd_rules_java_codestyle.html#unnecessaryfullyqualifiedname" priority="4">
 Unnecessary use of fully qualified name 'java.util.Locale' due to existing import 'java.util.Locale'
 </violation>
@@ -29,7 +29,7 @@ Unnecessary use of fully qualified name 'java.util.Locale' due to existing impor
 Unnecessary use of fully qualified name 'java.util.Locale' due to existing import 'java.util.Locale'
 </violation>
 </file>
-<file name="/Users/ay/Documents/Course/cs304_SE/Lab/Teedy-1/docs-core/src/main/java/com/sismics/util/ImageDeskew.java">
+<file name="/Users/ay/Library/CloudStorage/OneDrive-Personal/Documents/Course/cs304_SE/Lab/Teedy-1/docs-core/src/main/java/com/sismics/util/ImageDeskew.java">
 <violation beginline="62" endline="62" begincolumn="21" endcolumn="31" rule="UselessParentheses" ruleset="Code Style" package="com.sismics.util" class="ImageDeskew" method="getSkewAngle" externalInfoUrl="https://pmd.github.io/pmd-6.55.0/pmd_rules_java_codestyle.html#uselessparentheses" priority="4">
 Useless parentheses.
 </violation>
@@ -43,7 +43,7 @@ Useless parentheses.
 These nested if statements could be combined
 </violation>
 </file>
-<file name="/Users/ay/Documents/Course/cs304_SE/Lab/Teedy-1/docs-core/src/main/java/com/sismics/util/ImageUtil.java">
+<file name="/Users/ay/Library/CloudStorage/OneDrive-Personal/Documents/Course/cs304_SE/Lab/Teedy-1/docs-core/src/main/java/com/sismics/util/ImageUtil.java">
 <violation beginline="59" endline="61" begincolumn="19" endcolumn="17" rule="EmptyCatchBlock" ruleset="Error Prone" package="com.sismics.util" class="ImageUtil" method="writeJpeg" externalInfoUrl="https://pmd.github.io/pmd-6.55.0/pmd_rules_java_errorprone.html#emptycatchblock" priority="3">
 Avoid empty catch blocks
 </violation>
@@ -54,7 +54,7 @@ Useless parentheses.
 Avoid empty catch blocks
 </violation>
 </file>
-<file name="/Users/ay/Documents/Course/cs304_SE/Lab/Teedy-1/docs-core/src/main/java/com/sismics/util/io/InputStreamReaderThread.java">
+<file name="/Users/ay/Library/CloudStorage/OneDrive-Personal/Documents/Course/cs304_SE/Lab/Teedy-1/docs-core/src/main/java/com/sismics/util/io/InputStreamReaderThread.java">
 <violation beginline="41" endline="43" begincolumn="11" endcolumn="9" rule="EmptyCatchBlock" ruleset="Error Prone" package="com.sismics.util.io" class="InputStreamReaderThread" method="run" externalInfoUrl="https://pmd.github.io/pmd-6.55.0/pmd_rules_java_errorprone.html#emptycatchblock" priority="3">
 Avoid empty catch blocks
 </violation>
@@ -62,7 +62,7 @@ Avoid empty catch blocks
 Avoid empty catch blocks
 </violation>
 </file>
-<file name="/Users/ay/Documents/Course/cs304_SE/Lab/Teedy-1/docs-core/src/main/java/com/sismics/util/jpa/EMF.java">
+<file name="/Users/ay/Library/CloudStorage/OneDrive-Personal/Documents/Course/cs304_SE/Lab/Teedy-1/docs-core/src/main/java/com/sismics/util/jpa/EMF.java">
 <violation beginline="17" endline="17" begincolumn="1" endcolumn="25" rule="UnnecessaryImport" ruleset="Code Style" package="com.sismics.util.jpa" class="EMF" externalInfoUrl="https://pmd.github.io/pmd-6.55.0/pmd_rules_java_codestyle.html#unnecessaryimport" priority="4">
 Unused import 'java.util.HashMap'
 </violation>
@@ -70,17 +70,17 @@ Unused import 'java.util.HashMap'
 Unused import 'java.util.Map'
 </violation>
 </file>
-<file name="/Users/ay/Documents/Course/cs304_SE/Lab/Teedy-1/docs-core/src/main/java/com/sismics/util/log4j/MemoryAppender.java">
+<file name="/Users/ay/Library/CloudStorage/OneDrive-Personal/Documents/Course/cs304_SE/Lab/Teedy-1/docs-core/src/main/java/com/sismics/util/log4j/MemoryAppender.java">
 <violation beginline="72" endline="72" begincolumn="17" endcolumn="26" rule="UselessParentheses" ruleset="Code Style" package="com.sismics.util.log4j" class="MemoryAppender" method="getLoggerName" externalInfoUrl="https://pmd.github.io/pmd-6.55.0/pmd_rules_java_codestyle.html#uselessparentheses" priority="4">
 Useless parentheses.
 </violation>
 </file>
-<file name="/Users/ay/Documents/Course/cs304_SE/Lab/Teedy-1/docs-core/src/main/java/com/sismics/util/totp/GoogleAuthenticator.java">
+<file name="/Users/ay/Library/CloudStorage/OneDrive-Personal/Documents/Course/cs304_SE/Lab/Teedy-1/docs-core/src/main/java/com/sismics/util/totp/GoogleAuthenticator.java">
 <violation beginline="256" endline="256" begincolumn="35" endcolumn="57" rule="UselessParentheses" ruleset="Code Style" package="com.sismics.util.totp" class="GoogleAuthenticator" method="calculateCode" externalInfoUrl="https://pmd.github.io/pmd-6.55.0/pmd_rules_java_codestyle.html#uselessparentheses" priority="4">
 Useless parentheses.
 </violation>
 </file>
-<file name="/Users/ay/Documents/Course/cs304_SE/Lab/Teedy-1/docs-web-common/src/main/java/com/sismics/security/IPrincipal.java">
+<file name="/Users/ay/Library/CloudStorage/OneDrive-Personal/Documents/Course/cs304_SE/Lab/Teedy-1/docs-web-common/src/main/java/com/sismics/security/IPrincipal.java">
 <violation beginline="33" endline="33" begincolumn="12" endcolumn="26" rule="UnnecessaryModifier" ruleset="Code Style" package="com.sismics.security" class="IPrincipal" method="getId" externalInfoUrl="https://pmd.github.io/pmd-6.55.0/pmd_rules_java_codestyle.html#unnecessarymodifier" priority="3">
 Unnecessary modifier 'public' on method 'getId': the method is declared in an interface type
 </violation>
@@ -94,12 +94,12 @@ Unnecessary modifier 'public' on method 'getDateTimeZone': the method is declare
 Unnecessary modifier 'public' on method 'getEmail': the method is declared in an interface type
 </violation>
 </file>
-<file name="/Users/ay/Documents/Course/cs304_SE/Lab/Teedy-1/docs-web-common/src/main/java/com/sismics/util/filter/RequestContextFilter.java">
+<file name="/Users/ay/Library/CloudStorage/OneDrive-Personal/Documents/Course/cs304_SE/Lab/Teedy-1/docs-web-common/src/main/java/com/sismics/util/filter/RequestContextFilter.java">
 <violation beginline="115" endline="134" begincolumn="13" endcolumn="13" rule="CollapsibleIfStatements" ruleset="Design" package="com.sismics.util.filter" class="RequestContextFilter" method="doFilter" externalInfoUrl="https://pmd.github.io/pmd-6.55.0/pmd_rules_java_design.html#collapsibleifstatements" priority="3">
 These nested if statements could be combined
 </violation>
 </file>
-<file name="/Users/ay/Documents/Course/cs304_SE/Lab/Teedy-1/docs-web/src/main/java/com/sismics/docs/rest/resource/DocumentResource.java">
+<file name="/Users/ay/Library/CloudStorage/OneDrive-Personal/Documents/Course/cs304_SE/Lab/Teedy-1/docs-web/src/main/java/com/sismics/docs/rest/resource/DocumentResource.java">
 <violation beginline="58" endline="58" begincolumn="1" endcolumn="26" rule="UnnecessaryImport" ruleset="Code Style" package="com.sismics.docs.rest.resource" class="DocumentResource" externalInfoUrl="https://pmd.github.io/pmd-6.55.0/pmd_rules_java_codestyle.html#unnecessaryimport" priority="4">
 Unused import 'jakarta.ws.rs.HEAD'
 </violation>
@@ -110,7 +110,7 @@ Unused import 'java.util.ArrayList'
 Unused import 'java.util.UUID'
 </violation>
 </file>
-<file name="/Users/ay/Documents/Course/cs304_SE/Lab/Teedy-1/docs-web/src/main/java/com/sismics/docs/rest/resource/FileResource.java">
+<file name="/Users/ay/Library/CloudStorage/OneDrive-Personal/Documents/Course/cs304_SE/Lab/Teedy-1/docs-web/src/main/java/com/sismics/docs/rest/resource/FileResource.java">
 <violation beginline="599" endline="601" begincolumn="19" endcolumn="17" rule="EmptyCatchBlock" ruleset="Error Prone" package="com.sismics.docs.rest.resource" class="FileResource" method="data" externalInfoUrl="https://pmd.github.io/pmd-6.55.0/pmd_rules_java_errorprone.html#emptycatchblock" priority="3">
 Avoid empty catch blocks
 </violation>
@@ -118,12 +118,12 @@ Avoid empty catch blocks
 Avoid empty catch blocks
 </violation>
 </file>
-<file name="/Users/ay/Documents/Course/cs304_SE/Lab/Teedy-1/docs-web/src/main/java/com/sismics/docs/rest/resource/ThemeResource.java">
+<file name="/Users/ay/Library/CloudStorage/OneDrive-Personal/Documents/Course/cs304_SE/Lab/Teedy-1/docs-web/src/main/java/com/sismics/docs/rest/resource/ThemeResource.java">
 <violation beginline="232" endline="234" begincolumn="23" endcolumn="21" rule="EmptyCatchBlock" ruleset="Error Prone" package="com.sismics.docs.rest.resource" class="ThemeResource" method="write" externalInfoUrl="https://pmd.github.io/pmd-6.55.0/pmd_rules_java_errorprone.html#emptycatchblock" priority="3">
 Avoid empty catch blocks
 </violation>
 </file>
-<file name="/Users/ay/Documents/Course/cs304_SE/Lab/Teedy-1/docs-web/src/main/java/com/sismics/docs/rest/util/DocumentSearchCriteriaUtil.java">
+<file name="/Users/ay/Library/CloudStorage/OneDrive-Personal/Documents/Course/cs304_SE/Lab/Teedy-1/docs-web/src/main/java/com/sismics/docs/rest/util/DocumentSearchCriteriaUtil.java">
 <violation beginline="174" endline="174" begincolumn="14" endcolumn="33" rule="UselessParentheses" ruleset="Code Style" package="com.sismics.docs.rest.util" class="DocumentSearchCriteriaUtil" method="addHttpSearchParams" externalInfoUrl="https://pmd.github.io/pmd-6.55.0/pmd_rules_java_codestyle.html#uselessparentheses" priority="4">
 Useless parentheses.
 </violation>
