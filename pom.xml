@@ -174,7 +174,7 @@
         <version>3.6.3</version>
         <configuration>
           <failOnError>false</failOnError>
-          <additionalparam>-tag api:X -tag apiName:X -tag apiGroup:X -tag apiSuccess:X -tag apiError:X -tag apiPermission:X -tag apiVersion:X</additionalparam>
+          <additionalparam>-Xdoclint:none</additionalparam>
         </configuration>
         <executions>
           <execution>
