@@ -42,19 +42,33 @@ pipeline {
             }
         }
         // Uploading Docker images into Docker Hub
+        // stage('Upload image') {
+        //     steps {
+        //         script {
+        //             // sign in Docker Hub
+        //             docker.withRegistry('https://registry.hub.docker.com', 'dockerhub_credentials') {
+        //                 // push image
+        //                 docker.image("${env.DOCKER_IMAGE}:${env.DOCKER_TAG}").push()
+        //                 // ：optional: label latest
+        //                 docker.image("${env.DOCKER_IMAGE}:${env.DOCKER_TAG}").push('latest')
+        //             }
+        //         }
+        //     }
+        // }
+
         stage('Upload image') {
             steps {
-                script {
-                    // sign in Docker Hub
-                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub_credentials') {
-                        // push image
-                        docker.image("${env.DOCKER_IMAGE}:${env.DOCKER_TAG}").push()
-                        // ：optional: label latest
-                        docker.image("${env.DOCKER_IMAGE}:${env.DOCKER_TAG}").push('latest')
-                    }
+                withCredentials([usernamePassword(credentialsId: 'dockerhub_credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    sh '''
+                echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                docker push shawnliu2333/teedy:${BUILD_NUMBER}
+                docker tag shawnliu2333/teedy:${BUILD_NUMBER} shawnliu2333/teedy:latest
+                docker push shawnliu2333/teedy:latest
+            '''
                 }
             }
         }
+
         // Running Docker container
         stage('Run containers') {
             steps {
