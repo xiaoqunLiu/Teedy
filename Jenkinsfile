@@ -46,7 +46,7 @@ pipeline {
             steps {
                 script {
                     // sign in Docker Hub
-                    docker.withRegistry('https://registry.hub.docker.com', 'DOCKER_HUB_CREDENTIALS') {
+                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub_credentials') {
                         // push image
                         docker.image("${env.DOCKER_IMAGE}:${env.DOCKER_TAG}").push()
                         // ：optional: label latest
