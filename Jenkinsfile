@@ -1,9 +1,9 @@
 pipeline {
     agent any
-    
+
     tools {
         maven 'mymaven'
-        // Use the name defined in Global Tool Configuration
+    // Use the name defined in Global Tool Configuration
     }
 
     environment {
@@ -15,13 +15,19 @@ pipeline {
         DOCKER_TAG = "${env.BUILD_NUMBER}" // use build number as tag
     }
     stages {
+        stage('Test Docker') {
+            steps {
+                sh 'which docker && docker --version'
+            }
+        }
+
         stage('Build') {
             steps {
                 checkout scmGit(
                     branches: [[name: '*/master']],
                     extensions: [],
                     userRemoteConfigs: [[url: 'https://github.com/xiaoqunLiu/Teedy-1.git']]
-                    // your github Repository
+                // your github Repository
                 )
                 sh 'mvn -B -DskipTests clean package'
             }
@@ -40,7 +46,7 @@ pipeline {
             steps {
                 script {
                     // sign in Docker Hub
-                    docker.withRegistry('https://registry.hub.docker.com','DOCKER_HUB_CREDENTIALS') {
+                    docker.withRegistry('https://registry.hub.docker.com', 'DOCKER_HUB_CREDENTIALS') {
                         // push image
                         docker.image("${env.DOCKER_IMAGE}:${env.DOCKER_TAG}").push()
                         // ：optional: label latest
@@ -53,7 +59,7 @@ pipeline {
         stage('Run containers') {
             steps {
                 script {
-                // stop then remove containers if exists
+                    // stop then remove containers if exists
                     sh 'docker stop teedy-container-8081 || true'
                     sh 'docker rm teedy-container-8081 || true'
                     // run Container
