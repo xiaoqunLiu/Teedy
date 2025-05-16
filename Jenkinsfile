@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         DEPLOYMENT_NAME =  'hello-node'
-        CONTAINER_NAME =    'myteedyback'
+        CONTAINER_NAME =    'nginx'
         IMAGE_NAME =   'shawnliu2333/teedy:latest'
     }
 
