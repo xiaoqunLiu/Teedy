@@ -253,6 +253,15 @@ angular.module('docs',
         }
       }
     })
+    .state('settings.registration-requests', {
+      url: '/registration-requests',
+      views: {
+        'settings': {
+          templateUrl: 'partial/admin/registration-requests.html',
+          controller: 'RegistrationRequestsController'
+        }
+      }
+    })
     .state('document', {
       url: '/document',
       abstract: true,
@@ -387,7 +396,7 @@ angular.module('docs',
       views: {
         'sub': {
           templateUrl: 'partial/docs/user.profile.html',
-          controller: 'UserProfile'
+          controller: 'UserProfileController'
         }
       }
     })

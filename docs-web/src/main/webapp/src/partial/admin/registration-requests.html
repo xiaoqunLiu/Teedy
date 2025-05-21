@@ -1,0 +1,43 @@
+<div class="container">
+    <h2>{{ 'admin.registration_requests.title' | translate }}</h2>
+    
+    <p>--- TEST HEADING ---</p>
+    
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">{{ 'admin.registration_requests.pending_requests' | translate }}</h3>
+        </div>
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>{{ 'admin.registration_requests.username' | translate }}</th>
+                            <th>{{ 'admin.registration_requests.email' | translate }}</th>
+                            <th>{{ 'admin.registration_requests.create_date' | translate }}</th>
+                            <th>{{ 'admin.registration_requests.actions' | translate }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="request in requests">
+                            <td>{{ request.username }}</td>
+                            <td>{{ request.email }}</td>
+                            <td>{{ request.createDate | date:'medium' }}</td>
+                            <td>
+                                <button class="btn btn-success btn-sm" ng-click="approveRequest(request)">
+                                    <span class="fas fa-check"></span> {{ 'admin.registration_requests.approve' | translate }}
+                                </button>
+                                <button class="btn btn-danger btn-sm" ng-click="rejectRequest(request)">
+                                    <span class="fas fa-times"></span> {{ 'admin.registration_requests.reject' | translate }}
+                                </button>
+                            </td>
+                        </tr>
+                        <tr ng-if="!requests || requests.length === 0">
+                            <td colspan="4" class="text-center">{{ 'admin.registration_requests.no_requests' | translate }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div> 
