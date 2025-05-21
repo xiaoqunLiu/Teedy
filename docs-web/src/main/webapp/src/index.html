@@ -154,6 +154,11 @@
               {{ userInfo.username }}
             </a>
           </li>
+          <li ng-if="userInfo.username === 'guest'">
+            <a href="#/user/guest">
+              <span class="fas fa-user-plus"></span> {{ 'user.profile.request_registration' | translate }}
+            </a>
+          </li>
           <li ui-sref-active="{ active: 'settings.**' }" ng-show="userInfo.username != 'guest'">
             <a href="#/settings/account">
               <span class="fas fa-cog"></span> {{ 'index.nav_settings' | translate }}

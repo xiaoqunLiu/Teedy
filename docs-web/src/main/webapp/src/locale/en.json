@@ -253,7 +253,11 @@
       "percent_used": "{{ percent | number: 0 }}% Used",
       "related_links": "Related links",
       "document_created": "Documents created by {{ username }}",
-      "edit_user": "Edit {{ username }} user"
+      "edit_user": "Edit {{ username }} user",
+      "request_registration": "Request Registration",
+      "request_registration_message": "Are you sure you want to request registration? An administrator will review your request.",
+      "request_registration_success_title": "Request Submitted",
+      "request_registration_success_message": "Your registration request has been submitted successfully. An administrator will review your request and contact you soon."
     }
   },
   "usergroup": {

@@ -35,3 +35,9 @@
     </a>
   </li>
 </ul>
+
+<div ng-if="app.guest_login && userInfo && userInfo.username === 'guest'" class="mt-4">
+  <button class="btn btn-primary" ng-click="requestRegistration()">
+    <span class="fas fa-user-plus"></span> {{ 'user.profile.request_registration' | translate }}
+  </button>
+</div>
