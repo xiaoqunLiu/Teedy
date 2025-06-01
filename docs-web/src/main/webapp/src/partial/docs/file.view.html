@@ -63,3 +63,23 @@
     {{ 'file.view.not_found' | translate }}
   </p>
 </div>
+
+<!-- 语言选择模态框（已弃用，改用$uibModal弹窗，防止冲突） -->
+<!-- <div class="modal fade" id="translateModal" tabindex="-1" role="dialog" aria-labelledby="translateModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="translateModalLabel">{{ 'file.view.select_language' | translate }}</h4>
+      </div>
+      <div class="modal-body">
+        <label for="targetLang">{{ 'file.view.target_language' | translate }}</label>
+        <select id="targetLang" class="form-control" ng-model="targetLang" ng-options="lang.code as lang.name for lang in langList"></select>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" ng-click="doTranslate()">{{ 'file.view.translate_confirm' | translate }}</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'file.view.cancel' | translate }}</button>
+      </div>
+    </div>
+  </div>
+</div> -->

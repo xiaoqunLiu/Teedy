@@ -3,7 +3,7 @@
 /**
  * File modal view controller.
  */
-angular.module('docs').controller('FileModalView', function ($uibModalInstance, $scope, $state, $stateParams, $sce, Restangular, $transitions) {
+angular.module('docs').controller('FileModalView', function ($uibModal, $uibModalInstance, $scope, $state, $stateParams, $sce, Restangular, $transitions) {
   var setFile = function (files) {
     // Search current file
     _.each(files, function (value) {
@@ -122,5 +122,49 @@ angular.module('docs').controller('FileModalView', function ($uibModalInstance, 
    */
   $scope.canDisplayPreview = function () {
     return $scope.file && $scope.file.mimetype !== 'application/pdf';
+  };
+
+  // 语言列表
+  $scope.langList = [
+    { code: 'zh-CHS', name: '中文' },
+    { code: 'en', name: 'English' },
+    { code: 'fr', name: 'Français' }
+  ];
+  $scope.targetLang = $scope.langList[0].code;
+
+  // 使用$uibModal弹出语言选择框
+  $scope.translateFile = function () {
+    $uibModal.open({
+      templateUrl: 'partial/docs/file.translate.modal.html',
+      controller: function($scope, $uibModalInstance, langList, targetLang) {
+        $scope.langList = langList;
+        $scope.targetLang = targetLang;
+        $scope.ok = function() {
+          $uibModalInstance.close($scope.targetLang);
+        };
+        $scope.cancel = function() {
+          $uibModalInstance.dismiss();
+        };
+      },
+      resolve: {
+        langList: function() { return $scope.langList; },
+        targetLang: function() { return $scope.targetLang; }
+      }
+    }).result.then(function(selectedLang) {
+      $scope.targetLang = selectedLang;
+      $scope.doTranslate();
+    });
+  };
+
+  // 执行翻译
+  $scope.doTranslate = function () {
+    // 这里调用后端API进行翻译
+    Restangular.one('file/' + $stateParams.fileId + '/translate').post('', {
+      to: $scope.targetLang
+    }).then(function (resp) {
+      alert('翻译成功，已生成新文件！');
+    }, function (err) {
+      alert('翻译失败，请重试！');
+    });
   };
 });

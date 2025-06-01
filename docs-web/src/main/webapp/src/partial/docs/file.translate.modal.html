@@ -1,0 +1,11 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{ '选择目标语言' }}</h4>
+</div>
+<div class="modal-body">
+  <label for="targetLang">目标语言</label>
+  <select id="targetLang" class="form-control" ng-model="targetLang" ng-options="lang.code as lang.name for lang in langList"></select>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-primary" ng-click="ok()">确定</button>
+  <button type="button" class="btn btn-default" ng-click="cancel()">取消</button>
+</div>
