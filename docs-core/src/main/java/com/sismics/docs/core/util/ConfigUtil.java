@@ -19,6 +19,25 @@ public class ConfigUtil {
      * @throws IllegalStateException Configuration parameter undefined
      */
     public static String getConfigStringValue(ConfigType configType) {
+        // First try to get from ResourceBundle
+        try {
+            ResourceBundle bundle = getConfigBundle();
+            String key = configType.name().toLowerCase();
+            // Special case for Youdao API keys
+            if (configType == ConfigType.YOUDAO_APP_KEY) {
+                key = "youdao.app_key";
+            } else if (configType == ConfigType.YOUDAO_APP_SECRET) {
+                key = "youdao.app_secret";
+            }
+            String value = bundle.getString(key);
+            if (value != null && !value.isEmpty()) {
+                return value;
+            }
+        } catch (Exception e) {
+            // Ignore and try database
+        }
+
+        // If not found in ResourceBundle, try database
         ConfigDao configDao = new ConfigDao();
         Config config = configDao.getById(configType);
         if (config == null) {

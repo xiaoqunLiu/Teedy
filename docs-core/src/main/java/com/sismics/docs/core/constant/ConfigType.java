@@ -9,61 +9,77 @@ public enum ConfigType {
     /**
      * Lucene directory storage type.
      */
-    LUCENE_DIRECTORY_STORAGE,
+    LUCENE_DIRECTORY_STORAGE("lucene_directory_storage"),
     /**
      * Theme configuration.
      */
-    THEME,
+    THEME("theme"),
 
     /**
      * Guest login.
      */
-    GUEST_LOGIN,
+    GUEST_LOGIN("guest_login"),
 
     /**
      * OCR enabled.
      */
-    OCR_ENABLED,
+    OCR_ENABLED("ocr_enabled"),
 
     /**
      * Default language.
      */
-    DEFAULT_LANGUAGE,
+    DEFAULT_LANGUAGE("default_language"),
 
     /**
      * SMTP server configuration.
      */
-    SMTP_HOSTNAME,
-    SMTP_PORT,
-    SMTP_FROM,
-    SMTP_USERNAME,
-    SMTP_PASSWORD,
+    SMTP_HOSTNAME("smtp_hostname"),
+    SMTP_PORT("smtp_port"),
+    SMTP_FROM("smtp_from"),
+    SMTP_USERNAME("smtp_username"),
+    SMTP_PASSWORD("smtp_password"),
 
     /**
      * Inbox scanning configuration.
      */
-    INBOX_ENABLED,
-    INBOX_HOSTNAME,
-    INBOX_PORT,
-    INBOX_STARTTLS,
-    INBOX_USERNAME,
-    INBOX_PASSWORD,
-    INBOX_FOLDER,
-    INBOX_TAG,
-    INBOX_AUTOMATIC_TAGS,
-    INBOX_DELETE_IMPORTED,
+    INBOX_ENABLED("inbox_enabled"),
+    INBOX_HOSTNAME("inbox_hostname"),
+    INBOX_PORT("inbox_port"),
+    INBOX_STARTTLS("inbox_starttls"),
+    INBOX_USERNAME("inbox_username"),
+    INBOX_PASSWORD("inbox_password"),
+    INBOX_FOLDER("inbox_folder"),
+    INBOX_TAG("inbox_tag"),
+    INBOX_AUTOMATIC_TAGS("inbox_automatic_tags"),
+    INBOX_DELETE_IMPORTED("inbox_delete_imported"),
 
     /**
      * LDAP connection.
      */
-    LDAP_ENABLED,
-    LDAP_HOST,
-    LDAP_PORT,
-    LDAP_USESSL,
-    LDAP_ADMIN_DN,
-    LDAP_ADMIN_PASSWORD,
-    LDAP_BASE_DN,
-    LDAP_FILTER,
-    LDAP_DEFAULT_EMAIL,
-    LDAP_DEFAULT_STORAGE
+    LDAP_ENABLED("ldap_enabled"),
+    LDAP_HOST("ldap_host"),
+    LDAP_PORT("ldap_port"),
+    LDAP_USESSL("ldap_usessl"),
+    LDAP_ADMIN_DN("ldap_admin_dn"),
+    LDAP_ADMIN_PASSWORD("ldap_admin_password"),
+    LDAP_BASE_DN("ldap_base_dn"),
+    LDAP_FILTER("ldap_filter"),
+    LDAP_DEFAULT_EMAIL("ldap_default_email"),
+    LDAP_DEFAULT_STORAGE("ldap_default_storage"),
+
+    /**
+     * Youdao Translation API configuration.
+     */
+    YOUDAO_APP_KEY("youdao.app_key"),
+    YOUDAO_APP_SECRET("youdao.app_secret");
+
+    private final String key;
+
+    ConfigType(String key) {
+        this.key = key;
+    }
+
+    public String getKey() {
+        return key;
+    }
 }

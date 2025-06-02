@@ -144,12 +144,29 @@
       <scope>test</scope>
     </dependency>
 
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>4.5.13</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20231013</version>
+    </dependency>
+
   </dependencies>
 
   <build>
     <resources>
       <resource>
         <directory>src/main/resources</directory>
+        <filtering>false</filtering>
+      </resource>
+      <resource>
+        <directory>src/dev/resources</directory>
+        <filtering>false</filtering>
       </resource>
     </resources>
   </build>
@@ -171,16 +188,6 @@
           <resource>
             <directory>src/dev/resources</directory>
             <filtering>false</filtering>
-            <excludes>
-              <exclude>**/config.properties</exclude>
-            </excludes>
-          </resource>
-          <resource>
-            <directory>src/dev/resources</directory>
-            <filtering>true</filtering>
-            <includes>
-              <include>**/config.properties</include>
-            </includes>
           </resource>
         </resources>
 

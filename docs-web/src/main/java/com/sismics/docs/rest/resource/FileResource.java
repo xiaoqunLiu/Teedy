@@ -15,6 +15,7 @@ import com.sismics.docs.core.event.FileUpdatedAsyncEvent;
 import com.sismics.docs.core.model.context.AppContext;
 import com.sismics.docs.core.model.jpa.File;
 import com.sismics.docs.core.model.jpa.User;
+import com.sismics.docs.core.service.TranslationService;
 import com.sismics.docs.core.util.DirectoryUtil;
 import com.sismics.docs.core.util.EncryptionUtil;
 import com.sismics.docs.core.util.FileUtil;
@@ -59,16 +60,30 @@ import java.util.zip.ZipOutputStream;
  */
 @Path("/file")
 public class FileResource extends BaseResource {
+    // 语言代码映射
+    private static String mapLangCode(String code) {
+        if (code == null || code.trim().isEmpty()) return "auto";
+        if (code.equalsIgnoreCase("eng")) return "en";
+        if (code.equalsIgnoreCase("en")) return "en";
+        if (code.equalsIgnoreCase("zh") || code.equalsIgnoreCase("zh-CHS") || code.equalsIgnoreCase("zh_CN")) return "zh-CHS";
+        if (code.equalsIgnoreCase("spa")) return "es";
+        if (code.equalsIgnoreCase("fra")) return "fr";
+        // 可根据需要补充更多映射
+        return code;
+    }
+
     /**
      * Add a file (with or without a document).
      *
      * @api {put} /file Add a file
-     * @apiDescription A file can be added without associated document, and will go in a temporary storage waiting for one.
-     * This resource accepts only multipart/form-data.
+     * @apiDescription A file can be added without associated document, and will go
+     *                 in a temporary storage waiting for one.
+     *                 This resource accepts only multipart/form-data.
      * @apiName PutFile
      * @apiGroup File
      * @apiParam {String} [id] Document ID
-     * @apiParam {String} [previousFileId] ID of the file to replace by this new version
+     * @apiParam {String} [previousFileId] ID of the file to replace by this new
+     *           version
      * @apiParam {String} file File data
      * @apiSuccess {String} status Status OK
      * @apiSuccess {String} id File ID
@@ -83,7 +98,7 @@ public class FileResource extends BaseResource {
      * @apiPermission user
      * @apiVersion 1.5.0
      *
-     * @param documentId Document ID
+     * @param documentId   Document ID
      * @param fileBodyPart File to add
      * @return Response
      */
@@ -96,7 +111,7 @@ public class FileResource extends BaseResource {
         if (!authenticate()) {
             throw new ForbiddenClientException();
         }
-        
+
         // Validate input data
         ValidationUtil.validateRequired(fileBodyPart, "file");
 
@@ -111,23 +126,25 @@ public class FileResource extends BaseResource {
                 throw new NotFoundException();
             }
         }
-        
+
         // Keep unencrypted data temporary on disk
-        String name = fileBodyPart.getContentDisposition() != null ?
-                URLDecoder.decode(fileBodyPart.getContentDisposition().getFileName(), StandardCharsets.UTF_8) : null;
+        String name = fileBodyPart.getContentDisposition() != null
+                ? URLDecoder.decode(fileBodyPart.getContentDisposition().getFileName(), StandardCharsets.UTF_8)
+                : null;
         java.nio.file.Path unencryptedFile;
         long fileSize;
         try {
             unencryptedFile = AppContext.getInstance().getFileService().createTemporaryFile(name);
-            Files.copy(fileBodyPart.getValueAs(InputStream.class), unencryptedFile, StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(fileBodyPart.getValueAs(InputStream.class), unencryptedFile,
+                    StandardCopyOption.REPLACE_EXISTING);
             fileSize = Files.size(unencryptedFile);
         } catch (IOException e) {
             throw new ServerException("StreamError", "Error reading the input file", e);
         }
 
         try {
-            String fileId = FileUtil.createFile(name, previousFileId, unencryptedFile, fileSize, documentDto == null ?
-                    null : documentDto.getLanguage(), principal.getId(), documentId);
+            String fileId = FileUtil.createFile(name, previousFileId, unencryptedFile, fileSize,
+                    documentDto == null ? null : documentDto.getLanguage(), principal.getId(), documentId);
 
             // Always return OK
             JsonObjectBuilder response = Json.createObjectBuilder()
@@ -141,7 +158,7 @@ public class FileResource extends BaseResource {
             throw new ServerException("FileError", "Error adding a file", e);
         }
     }
-    
+
     /**
      * Attach a file to a document.
      *
@@ -172,11 +189,11 @@ public class FileResource extends BaseResource {
 
         // Validate input data
         ValidationUtil.validateRequired(documentId, "documentId");
-        
+
         // Get the current user
         UserDao userDao = new UserDao();
         User user = userDao.getById(principal.getId());
-        
+
         // Get the document and the file
         DocumentDao documentDao = new DocumentDao();
         FileDao fileDao = new FileDao();
@@ -185,18 +202,19 @@ public class FileResource extends BaseResource {
         if (file == null || documentDto == null) {
             throw new NotFoundException();
         }
-        
+
         // Check that the file is orphan
         if (file.getDocumentId() != null) {
             throw new ClientException("IllegalFile", MessageFormat.format("File not orphan: {0}", id));
         }
-        
+
         // Update the file
         file.setDocumentId(documentId);
         file.setOrder(fileDao.getByDocumentId(principal.getId(), documentId).size());
         fileDao.update(file);
-        
-        // Raise a new file updated event and document updated event (it wasn't sent during file creation)
+
+        // Raise a new file updated event and document updated event (it wasn't sent
+        // during file creation)
         try {
             java.nio.file.Path storedFile = DirectoryUtil.getStorageDirectory().resolve(id);
             java.nio.file.Path unencryptedFile = EncryptionUtil.decryptFile(storedFile, user.getPrivateKey());
@@ -207,7 +225,7 @@ public class FileResource extends BaseResource {
             fileUpdatedAsyncEvent.setFileId(file.getId());
             fileUpdatedAsyncEvent.setUnencryptedFile(unencryptedFile);
             ThreadLocalContext.get().addAsyncEvent(fileUpdatedAsyncEvent);
-            
+
             DocumentUpdatedAsyncEvent documentUpdatedAsyncEvent = new DocumentUpdatedAsyncEvent();
             documentUpdatedAsyncEvent.setUserId(principal.getId());
             documentUpdatedAsyncEvent.setDocumentId(documentId);
@@ -242,7 +260,7 @@ public class FileResource extends BaseResource {
     @POST
     @Path("{id: [a-z0-9\\-]+}")
     public Response update(@PathParam("id") String id,
-                           @FormParam("name") String name) {
+            @FormParam("name") String name) {
         if (!authenticate()) {
             throw new ForbiddenClientException();
         }
@@ -324,7 +342,7 @@ public class FileResource extends BaseResource {
                 .add("status", "ok");
         return Response.ok().entity(response.build()).build();
     }
-    
+
     /**
      * Reorder files.
      *
@@ -341,7 +359,7 @@ public class FileResource extends BaseResource {
      * @apiVersion 1.5.0
      *
      * @param documentId Document ID
-     * @param idList List of files ID in the new order
+     * @param idList     List of files ID in the new order
      * @return Response
      */
     @POST
@@ -352,17 +370,17 @@ public class FileResource extends BaseResource {
         if (!authenticate()) {
             throw new ForbiddenClientException();
         }
-        
+
         // Validate input data
         ValidationUtil.validateRequired(documentId, "id");
         ValidationUtil.validateRequired(idList, "order");
-        
+
         // Get the document
         AclDao aclDao = new AclDao();
         if (!aclDao.checkPermission(documentId, PermType.WRITE, getTargetIdList(null))) {
             throw new NotFoundException();
         }
-        
+
         // Reorder files
         FileDao fileDao = new FileDao();
         for (File file : fileDao.getByDocumentId(principal.getId(), documentId)) {
@@ -377,13 +395,13 @@ public class FileResource extends BaseResource {
         event.setUserId(principal.getId());
         event.setDocumentId(documentId);
         ThreadLocalContext.get().addAsyncEvent(event);
-        
+
         // Always return OK
         JsonObjectBuilder response = Json.createObjectBuilder()
                 .add("status", "ok");
         return Response.ok().entity(response.build()).build();
     }
-    
+
     /**
      * Returns files linked to a document or not linked to any document.
      *
@@ -394,7 +412,8 @@ public class FileResource extends BaseResource {
      * @apiParam {String} [share] Share ID
      * @apiSuccess {Object[]} files List of files
      * @apiSuccess {String} files.id ID
-     * @apiSuccess {String} files.processing True if the file is currently processing
+     * @apiSuccess {String} files.processing True if the file is currently
+     *             processing
      * @apiSuccess {String} files.name File name
      * @apiSuccess {String} files.version Zero-based version number
      * @apiSuccess {String} files.mimetype MIME type
@@ -408,7 +427,7 @@ public class FileResource extends BaseResource {
      * @apiVersion 1.5.0
      *
      * @param documentId Document ID
-     * @param shareId Sharing ID
+     * @param shareId    Sharing ID
      * @return Response
      */
     @GET
@@ -417,7 +436,7 @@ public class FileResource extends BaseResource {
             @QueryParam("id") String documentId,
             @QueryParam("share") String shareId) {
         boolean authenticated = authenticate();
-        
+
         // Check document visibility
         if (documentId != null) {
             AclDao aclDao = new AclDao();
@@ -489,7 +508,7 @@ public class FileResource extends BaseResource {
                 .add("files", files);
         return Response.ok().entity(response.build()).build();
     }
-    
+
     /**
      * Deletes a file.
      *
@@ -520,14 +539,14 @@ public class FileResource extends BaseResource {
         // Delete the file
         FileDao fileDao = new FileDao();
         fileDao.delete(file.getId(), principal.getId());
-        
+
         // Raise a new file deleted event
         FileDeletedAsyncEvent fileDeletedAsyncEvent = new FileDeletedAsyncEvent();
         fileDeletedAsyncEvent.setUserId(principal.getId());
         fileDeletedAsyncEvent.setFileId(file.getId());
         fileDeletedAsyncEvent.setFileSize(file.getSize());
         ThreadLocalContext.get().addAsyncEvent(fileDeletedAsyncEvent);
-        
+
         if (file.getDocumentId() != null) {
             // Raise a new document updated
             DocumentUpdatedAsyncEvent documentUpdatedAsyncEvent = new DocumentUpdatedAsyncEvent();
@@ -535,13 +554,13 @@ public class FileResource extends BaseResource {
             documentUpdatedAsyncEvent.setDocumentId(file.getDocumentId());
             ThreadLocalContext.get().addAsyncEvent(documentUpdatedAsyncEvent);
         }
-        
+
         // Always return OK
         JsonObjectBuilder response = Json.createObjectBuilder()
                 .add("status", "ok");
         return Response.ok().entity(response.build()).build();
     }
-    
+
     /**
      * Returns a file.
      *
@@ -570,7 +589,7 @@ public class FileResource extends BaseResource {
             @QueryParam("share") String shareId,
             @QueryParam("size") String size) {
         authenticate();
-        
+
         if (size != null && !Lists.newArrayList("web", "thumb", "content").contains(size)) {
             throw new ClientException("SizeError", "Size must be web, thumb or content");
         }
@@ -607,19 +626,20 @@ public class FileResource extends BaseResource {
             mimeType = file.getMimeType();
             decrypt = true; // Original files are encrypted
         }
-        
+
         // Stream the output and decrypt it if necessary
         StreamingOutput stream;
-        
+
         // A file is always encrypted by the creator of it
         User user = userDao.getById(file.getUserId());
-        
+
         // Write the decrypted file to the output
         try {
             InputStream fileInputStream = Files.newInputStream(storedFile);
-            final InputStream responseInputStream = decrypt ?
-                    EncryptionUtil.decryptInputStream(fileInputStream, user.getPrivateKey()) : fileInputStream;
-                    
+            final InputStream responseInputStream = decrypt
+                    ? EncryptionUtil.decryptInputStream(fileInputStream, user.getPrivateKey())
+                    : fileInputStream;
+
             stream = outputStream -> {
                 try {
                     ByteStreams.copy(responseInputStream, outputStream);
@@ -666,17 +686,17 @@ public class FileResource extends BaseResource {
      * @apiVersion 1.5.0
      *
      * @param documentId Document ID
-     * @param shareId Share ID
+     * @param shareId    Share ID
      * @return Response
      */
     @GET
     @Path("zip")
-    @Produces({MediaType.APPLICATION_OCTET_STREAM, MediaType.TEXT_PLAIN})
+    @Produces({ MediaType.APPLICATION_OCTET_STREAM, MediaType.TEXT_PLAIN })
     public Response zip(
             @QueryParam("id") String documentId,
             @QueryParam("share") String shareId) {
         authenticate();
-        
+
         // Get the document
         DocumentDao documentDao = new DocumentDao();
         DocumentDto documentDto = documentDao.getDocument(documentId, PermType.READ, getTargetIdList(shareId));
@@ -709,7 +729,7 @@ public class FileResource extends BaseResource {
      */
     @POST
     @Path("zip")
-    @Produces({MediaType.APPLICATION_OCTET_STREAM, MediaType.TEXT_PLAIN})
+    @Produces({ MediaType.APPLICATION_OCTET_STREAM, MediaType.TEXT_PLAIN })
     public Response zip(
             @FormParam("files") List<String> filesIdsList) {
         authenticate();
@@ -735,7 +755,8 @@ public class FileResource extends BaseResource {
                     // Add the decrypted file to the ZIP stream
                     // Files are encrypted by the creator of them
                     User user = userDao.getById(file.getUserId());
-                    try (InputStream decryptedStream = EncryptionUtil.decryptInputStream(fileInputStream, user.getPrivateKey())) {
+                    try (InputStream decryptedStream = EncryptionUtil.decryptInputStream(fileInputStream,
+                            user.getPrivateKey())) {
                         ZipEntry zipEntry = new ZipEntry(index + "-" + file.getFullName(Integer.toString(index)));
                         zipOutputStream.putNextEntry(zipEntry);
                         ByteStreams.copy(decryptedStream, zipOutputStream);
@@ -748,7 +769,7 @@ public class FileResource extends BaseResource {
             }
             outputStream.close();
         };
-        
+
         // Write to the output
         return Response.ok(stream)
                 .header("Content-Type", "application/zip")
@@ -759,7 +780,7 @@ public class FileResource extends BaseResource {
     /**
      * Find a file with access rights checking.
      *
-     * @param fileId File ID
+     * @param fileId  File ID
      * @param shareId Share ID
      * @return File
      */
@@ -772,7 +793,6 @@ public class FileResource extends BaseResource {
         checkFileAccessible(shareId, file);
         return file;
     }
-
 
     /**
      * Find a list of files with access rights checking.
@@ -791,6 +811,7 @@ public class FileResource extends BaseResource {
 
     /**
      * Check if a file is accessible to the current user
+     * 
      * @param shareId Share ID
      * @param file
      */
@@ -807,6 +828,177 @@ public class FileResource extends BaseResource {
             if (!aclDao.checkPermission(file.getDocumentId(), PermType.READ, getTargetIdList(shareId))) {
                 throw new ForbiddenClientException();
             }
+        }
+    }
+
+    /**
+     * Translate a file.
+     *
+     * @api {post} /file/:id/translate Translate a file
+     * @apiName PostFileTranslate
+     * @apiGroup File
+     * @apiParam {String} id File ID
+     * @apiParam {String} to Target language code
+     * @apiSuccess {String} status Status OK
+     * @apiError (client) ForbiddenError Access denied
+     * @apiError (client) NotFound File not found
+     * @apiError (server) TranslationError Error translating the file
+     * @apiPermission user
+     * @apiVersion 1.12.0
+     *
+     * @param id   File ID
+     * @param body JSON body
+     * @return Response
+     */
+    @POST
+    @Path("{id: [a-z0-9\\-]+}/translate")
+    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_FORM_URLENCODED})
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response translate(
+            @PathParam("id") String id,
+            String body,
+            @HeaderParam("Content-Type") String contentType) {
+        System.out.println("[Translate] Step 0: Content-Type=" + contentType + ", body=" + body);
+        if (!authenticate()) {
+            System.out.println("[Translate] Step 0.1: Authentication failed");
+            throw new ForbiddenClientException();
+        }
+
+        // 解析 JSON body 获取 'to' 字段
+        String to = null;
+        if (contentType != null && contentType.contains("application/json")) {
+            try {
+                jakarta.json.JsonObject json = jakarta.json.Json.createReader(new java.io.StringReader(body)).readObject();
+                to = json.getString("to");
+                System.out.println("[Translate] Step 1: Target language = " + to);
+            } catch (Exception e) {
+                System.out.println("[Translate] Step 1: JSON parse error: " + e.getMessage());
+                throw new ClientException("InvalidRequest", "Invalid JSON body", e);
+            }
+        } else if (contentType != null && contentType.contains("application/x-www-form-urlencoded")) {
+            // 简单解析表单内容
+            if (body != null && body.startsWith("to=")) {
+                to = java.net.URLDecoder.decode(body.substring(3), java.nio.charset.StandardCharsets.UTF_8);
+                System.out.println("[Translate] Step 1: Target language (form) = " + to);
+            }
+        }
+
+        ValidationUtil.validateRequired(to, "to");
+
+        // Get the file
+        File file = null;
+        try {
+            file = findFile(id, null);
+            System.out.println("[Translate] Step 2: File found, name = " + file.getName());
+        } catch (Exception e) {
+            System.out.println("[Translate] Step 2: File not found: " + e.getMessage());
+            throw e;
+        }
+        if (file == null) {
+            System.out.println("[Translate] Step 2: File is null");
+            throw new NotFoundException();
+        }
+
+        // 调试输出 documentId
+        System.out.println("[Translate] Step 2.1: file.getDocumentId() = " + file.getDocumentId());
+        if (file.getDocumentId() == null) {
+            System.out.println("[Translate] Step 3: File is orphan (no documentId), cannot translate");
+            throw new NotFoundException("File is not attached to any document.");
+        }
+        DocumentDao documentDao = new DocumentDao();
+        DocumentDto documentDto = null;
+        try {
+            documentDto = documentDao.getDocument(file.getDocumentId(), PermType.READ, getTargetIdList(null));
+            if (documentDto == null) {
+                System.out.println("[Translate] Step 3: DocumentDto is null for id=" + file.getDocumentId());
+                throw new NotFoundException("Document not found or no permission for documentId=" + file.getDocumentId());
+            }
+            System.out.println("[Translate] Step 3: Document found, language = " + documentDto.getLanguage());
+        } catch (Exception e) {
+            System.out.println("[Translate] Step 3: Document not found: " + e.getMessage());
+            throw e;
+        }
+
+        String fromLang = mapLangCode(documentDto.getLanguage());
+        String toLang = mapLangCode(to);
+        // System.out.println("[DEBUG] documentDto.getLanguage() = " + documentDto.getLanguage());
+        // System.out.println("[DEBUG] to = " + to);
+        // System.out.println("[DEBUG] fromLang = " + fromLang + ", toLang = " + toLang);
+
+        try {
+            // Get the stored file
+            java.nio.file.Path storedFile = DirectoryUtil.getStorageDirectory().resolve(id);
+            UserDao userDao = new UserDao();
+            User user = userDao.getById(file.getUserId());
+            java.nio.file.Path unencryptedFile = EncryptionUtil.decryptFile(storedFile, user.getPrivateKey());
+            System.out.println("[Translate] Step 4: File decrypted, path = " + unencryptedFile);
+
+            // Read file content (only extract PDF text)
+            String content;
+            try (org.apache.pdfbox.pdmodel.PDDocument pdfDoc = org.apache.pdfbox.pdmodel.PDDocument.load(unencryptedFile.toFile())) {
+                org.apache.pdfbox.text.PDFTextStripper stripper = new org.apache.pdfbox.text.PDFTextStripper();
+                content = stripper.getText(pdfDoc);
+            }
+            System.out.println("[Translate] Step 5: File content read, length = " + content.length());
+
+            // Translate content
+            TranslationService translationService = new TranslationService();
+            String translatedContent = translationService.translate(content, fromLang, toLang);
+            System.out.println("[Translate] Step 6: Content translated, length = " + translatedContent.length());
+
+            // Create new PDF file with translated content
+            java.nio.file.Path newPdfFile = Files.createTempFile("translated_", ".pdf");
+            // 请将支持中英文的字体文件（如 NotoSansCJKsc-Regular.ttf）放到 src/main/resources/fonts/ 目录下
+            try (org.apache.pdfbox.pdmodel.PDDocument doc = new org.apache.pdfbox.pdmodel.PDDocument()) {
+                org.apache.pdfbox.pdmodel.PDPage page = new org.apache.pdfbox.pdmodel.PDPage();
+                doc.addPage(page);
+                // 加载字体
+                try (java.io.InputStream fontStream = getClass().getResourceAsStream("/fonts/NotoSansCJKsc-Regular.ttf")) {
+                    if (fontStream == null) {
+                        throw new RuntimeException("字体文件 /fonts/NotoSansCJKsc-Regular.ttf 未找到，请将支持中英文的 TTF 字体放到 src/main/resources/fonts/");
+                    }
+                    org.apache.pdfbox.pdmodel.font.PDType0Font font = org.apache.pdfbox.pdmodel.font.PDType0Font.load(doc, fontStream);
+                    try (org.apache.pdfbox.pdmodel.PDPageContentStream contentStream = new org.apache.pdfbox.pdmodel.PDPageContentStream(doc, page)) {
+                        contentStream.beginText();
+                        contentStream.setFont(font, 12);
+                        contentStream.newLineAtOffset(50, 700);
+                        int lineCount = 0;
+                        for (String line : translatedContent.split("\\r?\\n")) {
+                            contentStream.showText(line);
+                            contentStream.newLineAtOffset(0, -15);
+                            lineCount++;
+                            if (lineCount % 40 == 0) { // 每40行换一页
+                                contentStream.endText();
+                                contentStream.close();
+                                page = new org.apache.pdfbox.pdmodel.PDPage();
+                                doc.addPage(page);
+                                try (org.apache.pdfbox.pdmodel.PDPageContentStream cs = new org.apache.pdfbox.pdmodel.PDPageContentStream(doc, page)) {
+                                    cs.beginText();
+                                    cs.setFont(font, 12);
+                                    cs.newLineAtOffset(50, 700);
+                                }
+                            }
+                        }
+                        contentStream.endText();
+                    }
+                    doc.save(newPdfFile.toFile());
+                }
+            }
+            System.out.println("[Translate] Step 7: New PDF file created, path = " + newPdfFile);
+
+            // Create new file in Teedy
+            String newFileName = file.getName() + "_" + to + ".pdf";
+            String newFileId = FileUtil.createFile(newFileName, null, newPdfFile, Files.size(newPdfFile), to, principal.getId(), file.getDocumentId());
+            System.out.println("[Translate] Step 8: New file uploaded, id = " + newFileId);
+
+            // Always return OK
+            JsonObjectBuilder response = Json.createObjectBuilder()
+                    .add("status", "ok")
+                    .add("id", newFileId);
+            return Response.ok().entity(response.build()).build();
+        } catch (Exception e) {
+            System.out.println("[Translate] Step ERROR: " + e.getMessage());
+            throw new ServerException("TranslationError", "Error translating the file", e);
         }
     }
 }
