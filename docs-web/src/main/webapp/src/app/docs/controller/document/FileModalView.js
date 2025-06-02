@@ -163,8 +163,16 @@ angular.module('docs').controller('FileModalView', function ($uibModal, $uibModa
       to: $scope.targetLang
     }).then(function (resp) {
       alert('翻译成功，已生成新文件！');
+      $scope.refreshFiles(); // 翻译成功后自动刷新文件列表
     }, function (err) {
       alert('翻译失败，请重试！');
+    });
+  };
+
+  $scope.refreshFiles = function () {
+    Restangular.one('file/list').get({ id: $stateParams.id }).then(function (data) {
+      $scope.files = data.files;
+      setFile(data.files);
     });
   };
 });
